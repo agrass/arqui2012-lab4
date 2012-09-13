@@ -9,7 +9,40 @@ else:
 
 import main # el módulo a probar
 
-class TestPolisher(unittest.TestCase):
+class TestWebApp(unittest.TestCase):
 
-    def test_pass(self):
-        pass
+    def get_db_fail(self):
+        request = webapp2.Request.blank('/')
+        request.method = 'GET'
+        response = request.get_response(main.app)      
+        self.assertEqual(response.status_int, 404)
+
+    def get_db_ok(self):
+        request = webapp2.Request.blank('/')
+        request.method = 'GET'
+        response = request.get_response(main.app)      
+        self.assertEqual(response.status_int, 200)
+
+    def post_JSON_db_fail(self):
+        request = webapp2.Request.blank('/')
+        request.method = 'POST'
+        request.headers['Content-Type'] = 'application/json'
+        response = request.get_response(main.app)      
+        self.assertEqual(response.status_int, 404)
+
+    def post_JSON_db_fail(self):
+        request = webapp2.Request.blank('/')
+        request.method = 'POST'
+        request.headers['Content-Type'] = 'application/json'
+        response = request.get_response(main.app)      
+        self.assertEqual(response.status_int, 404)
+
+    def post_text_db_fail(self):
+        request = webapp2.Request.blank('/')
+        request.method = 'POST'
+        request.headers['Content-Type'] = 'application/json'
+        response = request.get_response(main.app)      
+        self.assertEqual(response.status_int, 404)
+
+
+       

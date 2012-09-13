@@ -1,34 +1,37 @@
 import webapp2
 
-class HelloWebapp2(webapp2.RequestHandler):
+class MainPage(webapp2.RequestHandler):
     def get(self):
-        f = open('data.json', 'r')
-        self.response.write('<html><head><title>Hola Mundo</title></head><body><h1>Hello, webapp2!</h1></body></html>')
-
-class TellHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.write(self.request.GET['message'])
-
-class ApiHandler(webapp2.RequestHandler):
-    def get(self):
-        data = [
-            {
-                "employees": [
-                    { "firstName":"John" , "lastName":"Doe" }, 
-                    { "firstName":"Anna" , "lastName":"Smith" }, 
-                    { "firstName":"Peter" , "lastName":"Jones" }
-                ]
-            }
-        ]
         import json
-        self.response.write(json.dumps(data))
-        self.response.headers['Content-Type'] = 'application/json'
+        try:
+            f = open('data.json', 'r')
+            self.response.out.write(json.dumps(f.read()))
+            f.close()
+            self.response.headers['Content-Type'] = 'application/json'
+        except Exception:
+            self.response.status = 404
+
+    def post(self):
+        try:
+            f = open('data.json')
+            data = json.load(f)
+            mensajes = ""
+            if self.request.content_type == 'application/json':
+                data["mensajes"].append(json.loads(self.request.body))
+            else:
+                data["mensajes"].append(self.request.body)
+
+        except Exception:
+            f = open('daa.json', w)
+            f.write('{" mensajes" :[ ] }')
+            f.close()        
+       
+        self.response.out.write('Mensaje enviado correctamente')        
+      
 
 
 app = webapp2.WSGIApplication([
-    ('/', HelloWebapp2),
-    ('/tell*', TellHandler),
-    ('/employees', ApiHandler),
+    ('/', MainPage),    
 ], debug=True)
 
 def main():
