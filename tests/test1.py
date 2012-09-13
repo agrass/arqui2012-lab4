@@ -11,5 +11,5 @@ import main # el módulo a probar
 
 class TestPolisher(unittest.TestCase):
 
-    def test_fail(self):
-        self.assertEqual(True, True)
+    def test_pass(self):
+        pass
