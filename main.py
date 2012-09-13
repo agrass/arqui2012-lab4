@@ -22,7 +22,7 @@ class MainPage(webapp2.RequestHandler):
                 data["mensajes"].append(self.request.body)
 
         except Exception:
-            f = open('daa.json', w)
+            f = open('data.json', 'w')
             f.write('{" mensajes" :[ ] }')
             f.close()        
        
@@ -40,3 +40,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    app.run()
