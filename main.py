@@ -1,4 +1,5 @@
 import webapp2
+import json
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -13,18 +14,25 @@ class MainPage(webapp2.RequestHandler):
 
     def post(self):
         try:
-            f = open('data.json')
-            data = json.load(f)
-            mensajes = ""
-            if self.request.content_type == 'application/json':
-                data["mensajes"].append(json.loads(self.request.body))
-            else:
-                data["mensajes"].append(self.request.body)
-
+            f = open('data.json', 'r')
+            data = json.load(f.read()) 
         except Exception:
             f = open('data.json', 'w')
-            f.write('{" mensajes" :[ ] }')
-            f.close()        
+            f.write('{ "mensajes" :[ ] }')
+            f = open('data.json')
+            data = json.load(f) 
+            f.close()
+
+        if self.request.content_type == 'application/json':
+            data["mensajes"].append(json.loads(self.request.body))
+        else:
+            data["mensajes"].append(self.request.body)
+
+        f = open("data.json","w")
+        f.write(json.dumps(data))
+        f.close()
+
+               
        
         self.response.out.write('Mensaje enviado correctamente')        
       
